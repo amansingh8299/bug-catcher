@@ -11,16 +11,24 @@ import "highlight.js/styles/github-dark.css";
 function App() {
     const [count, setCount] = useState(0);
 
-    const[code,setCode]=useState("");
+    const [code, setCode] = useState("");
 
-    const [review,setReview]=useState("");
+    const [review, setReview] = useState("");
     useEffect(() => {
         prism.highlightAll();
-    },[]);
+    }, []);
 
-    async function reveiwCode(){
-        const response = await axios.post('http://localhost:3000/ai/get-review',{code});
-        setReview(response.data);
+    async function reveiwCode() {
+        try {
+            setReview("Loading...");
+            const response = await axios.post(
+                "http://localhost:3000/ai/get-review",
+                { code }
+            );
+            setReview(response.data);
+        } catch (error) {
+            setReview("Something went wrong...");
+        }
     }
     return (
         <>
