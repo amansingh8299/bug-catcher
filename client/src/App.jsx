@@ -8,9 +8,11 @@ import axios from "axios";
 import Markdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
+import Spinner from "./components/Spinner";
+import Footer from "./components/Footer";
 function App() {
     const [count, setCount] = useState(0);
-
+    const [loading, setLoading] = useState(false);
     const [code, setCode] = useState("");
 
     const [review, setReview] = useState("");
@@ -21,13 +23,23 @@ function App() {
     async function reveiwCode() {
         try {
             setReview("Loading...");
+            setLoading(true);
+            // Check if code is empty
+            if (!code || code.trim() === "" || code.length === 0) {
+                setReview("Please enter some code...");
+                setLoading(false);
+                return;
+            }
             const response = await axios.post(
                 "http://localhost:3000/ai/get-review",
                 { code }
             );
+            setLoading(false);
             setReview(response.data);
         } catch (error) {
+            setLoading(false);
             setReview("Something went wrong...");
+            console.error(error.message);
         }
     }
     return (
@@ -65,10 +77,12 @@ function App() {
                 </div>
                 <div className="right">
                     <Markdown rehypePlugins={[rehypeHighlight]}>
+                        {/* {loading ? <Spinner /> : review} */}
                         {review}
                     </Markdown>
                 </div>
             </main>
+            <Footer />
         </>
     );
 }
