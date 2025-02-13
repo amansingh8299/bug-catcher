@@ -39,8 +39,13 @@ generate atleast 2 to 3 solution
 
 
 async function generateContent(prompt) {
-    const result = await model.generateContent(prompt);
+    try {
+        const result = await model.generateContent(prompt);
 
-    return result.response.text();
+        return result.response.text();
+    } catch (error) {
+        console.error(error.message);
+    }
+
 }
 module.exports = generateContent;
