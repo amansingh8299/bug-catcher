@@ -10,6 +10,7 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import Spinner from "./components/Spinner";
 import Footer from "./components/Footer";
+import Header from "./components/Header";
 function App() {
     const [count, setCount] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ function App() {
                 return;
             }
             const response = await axios.post(
-                "http://localhost:3000/ai/get-review",
+                "https://bugcatcher-thfb.onrender.com/ai/get-review",
                 { code }
             );
             setLoading(false);
@@ -45,6 +46,7 @@ function App() {
     return (
         <>
             <main>
+                <Header/>
                 <div className="left">
                     <div className="code">
                         <Editor
